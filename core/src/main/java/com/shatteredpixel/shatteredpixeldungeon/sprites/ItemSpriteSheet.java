@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.SPDTest;
 import com.watabou.noosa.TextureFilm;
 
 public class ItemSpriteSheet {
@@ -29,7 +30,7 @@ public class ItemSpriteSheet {
 	private static final int WIDTH = 16;
 	public static final int SIZE = 16;
 
-	public static TextureFilm film = new TextureFilm( Assets.Sprites.ITEMS, SIZE, SIZE );
+	public static TextureFilm film = SPDTest.testing ? new TextureFilm() : new TextureFilm( Assets.Sprites.ITEMS, SIZE, SIZE );
 
 	private static int xy(int x, int y){
 		x -= 1; y -= 1;
@@ -705,7 +706,7 @@ public class ItemSpriteSheet {
 		private static final int WIDTH = 16;
 		public static final int SIZE = 8;
 
-		public static TextureFilm film = new TextureFilm( Assets.Sprites.ITEM_ICONS, SIZE, SIZE );
+		public static TextureFilm film = SPDTest.testing ? new TextureFilm() : new TextureFilm( Assets.Sprites.ITEM_ICONS, SIZE, SIZE );
 
 		private static int xy(int x, int y){
 			x -= 1; y -= 1;

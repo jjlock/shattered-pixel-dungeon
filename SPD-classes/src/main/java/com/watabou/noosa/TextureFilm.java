@@ -35,6 +35,9 @@ public class TextureFilm {
 	private int texHeight;
 	
 	protected HashMap<Object,RectF> frames = new HashMap<>();
+
+	// use for testing only
+	public TextureFilm() {}
 	
 	public TextureFilm( Object tx ) {
 

@@ -3,7 +3,8 @@ include ':SPD-classes'
 include ':core'
 
 //platform modules
-include ':android'
+//build will fail on Intellij if "include ':android'" is present
+//include ':android'
 include ':ios'
 include ':desktop'
 
