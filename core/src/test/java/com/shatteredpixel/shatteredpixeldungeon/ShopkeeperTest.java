@@ -1,12 +1,15 @@
 package com.shatteredpixel.shatteredpixeldungeon;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
 import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
 import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
+import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.HuntressArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.*;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Affection;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.AlchemistsToolkit;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CapeOfThorns;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
@@ -25,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfAq
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfCleansing;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.CeremonialCandle;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.CorpseDust;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAccuracy;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
@@ -34,10 +38,13 @@ import com.shatteredpixel.shatteredpixeldungeon.items.spells.Alchemize;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.AquaBlast;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAugmentation;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorrosion;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.AssassinsBlade;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.FishingSpear;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.AdrenalineDart;
 
@@ -45,6 +52,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class ShopkeeperTest {
 
@@ -55,10 +63,12 @@ public class ShopkeeperTest {
         SPDTest.testing = true;
         // the shopkeeper starts appearing at depth 6
         Dungeon.depth = 6;
+        // initialize the player character
+        Dungeon.hero = new Hero();
     }
 
     @Test
-    public void testSellPriceArmor() {
+    public void armorSellPrice() {
         // regular armor
         Item ca = new ClothArmor();
         // class armor
@@ -69,7 +79,7 @@ public class ShopkeeperTest {
     }
 
     @Test
-    public void testSellPriceArtifact() {
+    public void artifactsSellPrice() {
         Item atk = new AlchemistsToolkit();
         Item cot = new CapeOfThorns();
 
@@ -78,7 +88,7 @@ public class ShopkeeperTest {
     }
 
     @Test
-    public void testSellPriceBags() {
+    public void bagsSellPrice() {
         Item mh = new MagicalHolster();
         Item pb = new PotionBandolier();
 
@@ -87,7 +97,7 @@ public class ShopkeeperTest {
     }
 
     @Test
-    public void testSellPriceBombs() {
+    public void bombsSellPrice() {
         Item ab = new ArcaneBomb();
         Item fb = new Firebomb();
 
@@ -96,7 +106,7 @@ public class ShopkeeperTest {
     }
 
     @Test
-    public void testSellPriceFood() {
+    public void foodSellPrice() {
         Item berry = new Berry();
         Item bf = new Blandfruit();
 
@@ -105,7 +115,7 @@ public class ShopkeeperTest {
     }
 
     @Test
-    public void testSellPriceJournals() {
+    public void journalsSellPrice() {
         Item ap = new AlchemyPage();
         Item gp = new GuidePage();
 
@@ -114,7 +124,7 @@ public class ShopkeeperTest {
     }
 
     @Test
-    public void testSellPriceKeys() {
+    public void keysSellPrice() {
         Item ck = new CrystalKey();
         Item gk = new GoldenKey();
 
@@ -123,7 +133,7 @@ public class ShopkeeperTest {
     }
 
     @Test
-    public void testSellPricePotions() {
+    public void potionsSellPrice() {
         // regular
         Item ac = new AlchemicalCatalyst();
         Item poe = new PotionOfExperience();
@@ -142,7 +152,7 @@ public class ShopkeeperTest {
     }
 
     @Test
-    public void testSellPriceQuestItems() {
+    public void questItemsSellPrice() {
         Item cc = new CeremonialCandle();
         Item cd = new CorpseDust();
 
@@ -151,7 +161,7 @@ public class ShopkeeperTest {
     }
 
     @Test
-    public void testSellPriceRings() {
+    public void ringsSellPrice() {
         Item roa = new RingOfAccuracy();
         Item roe = new RingOfElements();
 
@@ -160,7 +170,7 @@ public class ShopkeeperTest {
     }
 
     @Test
-    public void testSellPriceScrolls() {
+    public void scrollsSellPrice() {
         // regular
         Item soi = new ScrollOfIdentify();
         Item sol = new ScrollOfLullaby();
@@ -173,7 +183,7 @@ public class ShopkeeperTest {
     }
 
     @Test
-    public void testSellPriceSpells() {
+    public void spellsSellPrice() {
         Item alchemize = new Alchemize();
         Item ab = new AquaBlast();
 
@@ -182,7 +192,7 @@ public class ShopkeeperTest {
     }
 
     @Test
-    public void testSellPriceStones() {
+    public void stonesSellPrice() {
         Item stoneOfAggression = new StoneOfAggression();
         Item stoneOfAugmentation = new StoneOfAugmentation();
 
@@ -191,7 +201,7 @@ public class ShopkeeperTest {
     }
 
     @Test
-    public void testSellPriceWands() {
+    public void wandsSellPrice() {
         Item wobw = new WandOfBlastWave();
         Item woc = new WandOfCorrosion();
 
@@ -200,7 +210,7 @@ public class ShopkeeperTest {
     }
 
     @Test
-    public void testSellPriceWeapons() {
+    public void weaponsSellPrice() {
         // regular
         Item sb = new SpiritBow();
         // melee
@@ -216,11 +226,103 @@ public class ShopkeeperTest {
     }
 
     @Test
-    public void testSellPriceUniqueItems() {
+    public void uniqueItemsSellPrice() {
         Item amulet = new Amulet();
         Item ankh = new Ankh();
 
         assertEquals(0, Shopkeeper.sellPrice(amulet));
         assertEquals(500, Shopkeeper.sellPrice(ankh));
+    }
+
+    @Test
+    public void armorSellPriceWithAugmentations() {
+        // test armor with seal
+        Armor wa = new WarriorArmor();
+        wa.affixSeal(new BrokenSeal());
+        assertNotNull(wa.checkSeal());
+        assertEquals(0, Shopkeeper.sellPrice(wa));
+
+        // test armor with "good" glyph and level > 0
+        Armor la1 = new LeatherArmor();
+        la1.level(1);
+        la1.levelKnown = true;
+        la1.glyph = new Affection();
+        assertEquals(1200, Shopkeeper.sellPrice(la1));
+
+        // test armor with a curse
+        Armor la2 = new LeatherArmor();
+        la2.cursed = true;
+        la2.cursedKnown = true;
+        assertEquals(200, Shopkeeper.sellPrice(la2));
+    }
+
+    @Test
+    public void artifactsSellPriceWithAugmentations() {
+        // test artifact with level > 0 and a curse
+        Artifact at = new AlchemistsToolkit();
+        at.level(1);
+        at.cursed = true;
+        at.cursedKnown = true;
+        assertEquals(500, Shopkeeper.sellPrice(at));
+    }
+
+    @Test
+    public void ringsSellPriceWithAugmentations() {
+        // test ring with a curse
+        Ring roa1 = new RingOfAccuracy();
+        roa1.cursed = true;
+        roa1.cursedKnown = true;
+        assertEquals(370, Shopkeeper.sellPrice(roa1));
+
+        // test ring with level known and level > 0
+        Ring roa2 = new RingOfAccuracy();
+        roa2.level(1);
+        roa2.levelKnown = true;
+        assertEquals(1500, Shopkeeper.sellPrice(roa2));
+
+        // test ring with level known and level < 0
+        Ring roa3 = new RingOfAccuracy();
+        roa3.level(-2);
+        roa3.levelKnown = true;
+        assertEquals(250, Shopkeeper.sellPrice(roa3));
+    }
+
+    @Test
+    public void wandsSellPriceWithAugmentations() {
+        // test wand with a curse
+        Wand wobw1 = new WandOfBlastWave();
+        wobw1.cursed = true;
+        wobw1.cursedKnown = true;
+        assertEquals(370, Shopkeeper.sellPrice(wobw1));
+
+        // test ring with level known and level > 0
+        Wand wobw2 = new WandOfBlastWave();
+        wobw2.level(1);
+        wobw2.levelKnown = true;
+        assertEquals(1500, Shopkeeper.sellPrice(wobw2));
+
+        // test ring with level known and level < 0
+        Wand wobw3 = new WandOfBlastWave();
+        wobw3.level(-2);
+        wobw3.levelKnown = true;
+        assertEquals(250, Shopkeeper.sellPrice(wobw3));
+    }
+
+    @Test
+    public void meleeWeaponsSellPriceWithAugmentations() {
+        // test melee weapon with an enchantment and level > 0
+        MeleeWeapon ab1 = new AssassinsBlade();
+        ab1.enchantment = new Blazing();
+        ab1.level(1);
+        ab1.levelKnown = true;
+        assertEquals(2400, Shopkeeper.sellPrice(ab1));
+
+        // test melee weapon with a curse
+        MeleeWeapon ab2 = new AssassinsBlade();
+        ab2.cursed = true;
+        ab2.cursedKnown = true;
+        ab2.level(1);
+        ab2.levelKnown = true;
+        assertEquals(800, Shopkeeper.sellPrice(ab2));
     }
 }

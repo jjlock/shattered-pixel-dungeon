@@ -6,6 +6,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.AlchemistsToolkit;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.ArcaneBomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Berry;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.CrystalKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
@@ -13,6 +14,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.spells.Alchemize;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.BattleAxe;
 
+import com.watabou.utils.Bundle;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -44,7 +46,7 @@ public class QuickSlotTest {
     }
 
     @Test
-    public void AssignNonStackable_AssignNonStackable_Drop_Path() {
+    public void assignNonStackable_AssignNonStackable_Drop_Path() {
         Item at = new AlchemistsToolkit(); // non-stackable item
         Item wobw = new WandOfBlastWave(); // non-stackable item
 
@@ -62,7 +64,7 @@ public class QuickSlotTest {
     }
 
     @Test
-    public void AssignStackable_AssignNonStackable_AssignStackable_AssignStackable_Drop_Path() {
+    public void assignStackable_AssignNonStackable_AssignStackable_AssignStackable_Drop_Path() {
         Item ab = new ArcaneBomb(); // stackable item
         Item ba = new BattleAxe(); // non-stackable item
         Item berry = new Berry(); // stackable item
@@ -90,7 +92,7 @@ public class QuickSlotTest {
     }
 
     @Test
-    public void AssignStackable_UseItemNo_UseItemYes_AssignStackable_Drop_Path() {
+    public void assignStackable_UseItemNo_UseItemYes_AssignStackable_Drop_Path() {
         Item poe1 = new PotionOfExperience(); // stackable item
         // create a stack of two
         poe1.quantity(2);
@@ -120,7 +122,7 @@ public class QuickSlotTest {
     }
 
     @Test
-    public void AssignStackable_UseItemYes_AssignNonStackable_Drop_Path() {
+    public void assignStackable_UseItemYes_AssignNonStackable_Drop_Path() {
         Item soi = new ScrollOfIdentify(); // stackable item
         Item ca = new ClothArmor(); // non-stackable item
 
@@ -143,7 +145,7 @@ public class QuickSlotTest {
     }
 
     @Test
-    public void AssignStackable_UseItemYes_Drop_Path() {
+    public void assignStackable_UseItemYes_Drop_Path() {
         Item alchemize = new Alchemize(); // stackable item
 
         // assign stackable item to quick slot
@@ -159,5 +161,50 @@ public class QuickSlotTest {
         Item placeholder = Dungeon.quickslot.getItem(1);
         placeholder.detachAll(Dungeon.hero.belongings.backpack);
         assertNull(Dungeon.quickslot.getItem(1));
+    }
+
+    @Test
+    public void quickSlotDoesNotContainPlaceholder() {
+        Item berry = new Berry();
+        Dungeon.quickslot.setSlot(1, berry);
+        assertTrue(Dungeon.quickslot.isNonePlaceholder(1));
+    }
+
+    @Test
+    public void quickSlotSaveAndRestorePlaceholders() {
+        Item ab = new ArcaneBomb();
+        Item bf = new Blandfruit();
+        Item ck = new CrystalKey();
+        Item poe = new PotionOfExperience();
+        Item[] qs = new Item[]{ab, bf, ck, poe};
+
+        // place all items into quick slots
+        Dungeon.quickslot.setSlot(0, ab);
+        Dungeon.quickslot.setSlot(1, bf);
+        Dungeon.quickslot.setSlot(2, ck);
+        Dungeon.quickslot.setSlot(3, poe);
+
+        // convert all the items to placeholders
+        for (int i = 0; i < QuickSlot.SIZE; i++) {
+            Dungeon.quickslot.convertToPlaceholder(Dungeon.quickslot.getItem(i));
+        }
+
+        Bundle bundle = new Bundle();
+        // store the placeholders
+        Dungeon.quickslot.storePlaceholders(bundle);
+        // clear the quick slot array
+        Dungeon.quickslot.reset();
+        // restore the placeholders
+        Dungeon.quickslot.restorePlaceholders(bundle);
+
+        // check whether the placeholders are the same objects as before
+        // and if they are in the correct positions
+        for (int i = 0; i < QuickSlot.SIZE; i++) {
+            assertTrue(Dungeon.quickslot.isPlaceholder(i));
+        }
+        assertTrue(Dungeon.quickslot.getItem(0) instanceof ArcaneBomb);
+        assertTrue(Dungeon.quickslot.getItem(1) instanceof Blandfruit);
+        assertTrue(Dungeon.quickslot.getItem(2) instanceof CrystalKey);
+        assertTrue(Dungeon.quickslot.getItem(3) instanceof PotionOfExperience);
     }
 }
