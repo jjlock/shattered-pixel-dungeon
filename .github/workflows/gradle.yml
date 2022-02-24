@@ -1,0 +1,16 @@
+name: Shattered Pixel Dungeon CI
+on: [push]
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 17
+        uses: actions/setip-java@v2
+        with:
+          java-version: 17
+          distribution: 'adopt'
+      - name: Build with Gradle
+        run: ./gradlew build
+      - name: Run Tests
+        run: ./gradlew :core:test --tests "com.shatteredpixel.shatteredpixeldungeon.*"
