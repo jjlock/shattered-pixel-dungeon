@@ -6,6 +6,7 @@ sourceCompatibility = targetCompatibility = appJavaCompatibility
 dependencies {
     api project(':SPD-classes')
     testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.mockito:mockito-core:4.3.1'
     //TODO might be nice to remove this, should decide
     implementation project(':services')
 }

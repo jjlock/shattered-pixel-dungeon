@@ -278,6 +278,24 @@ public class QuickSlotButton extends Button {
 		return -1;
 	}
 
+	public static int autoAim(Char target, Item item, int[] distanceMap){
+
+		//first try to directly target
+		if (item.targetingPos(Dungeon.hero, target.pos) == target.pos) {
+			return target.pos;
+		}
+
+		//Otherwise pick nearby tiles to try and 'angle' the shot, auto-aim basically.
+		for (int i = 0; i < distanceMap.length; i++) {
+			if (distanceMap[i] < Integer.MAX_VALUE
+					&& item.targetingPos(Dungeon.hero, i) == target.pos)
+				return i;
+		}
+
+		//couldn't find a cell, give up.
+		return -1;
+	}
+
 	public static void refresh() {
 		for (int i = 0; i < instance.length; i++) {
 			if (instance[i] != null) {
